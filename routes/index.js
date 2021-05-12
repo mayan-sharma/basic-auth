@@ -1,8 +1,20 @@
 const express = require('express');
-const auth = require('../middlewares/auth');
 const router = express.Router();
 
+const auth = require('../middlewares/auth');
+
 router.use('/user', require('./user'));
+
+/**
+ * @method GET
+ * @route /api/
+ * @Authorization None
+ */
+router.get('/', (req, res) => {
+    return res.status(200).json({
+        msg: 'Welcome!'
+    })
+})
 
 /**
  * @method GET
@@ -11,7 +23,8 @@ router.use('/user', require('./user'));
  */
 router.get('/securedRoute', auth, (req, res) => {
     return res.status(200).json({
-        msg: 'Welcome to a secured route!'
+        msg: 'Welcome to a secured route!',
+        user: req.user
     })
 });
 
