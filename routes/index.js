@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const auth = require('../middlewares/auth');
+const User = require('../models/user');
 
 router.use('/user', require('./user'));
 
@@ -21,10 +22,15 @@ router.get('/', (req, res) => {
  * @route /api/securedRoute
  * @Authorization BEARER <Token>
  */
-router.get('/securedRoute', auth, (req, res) => {
+router.get('/securedRoute', auth, async (req, res) => {
+
+    const userId = req.user.id;
+    const user = await User.findById(userId);
+    
     return res.status(200).json({
         msg: 'Welcome to a secured route!',
-        user: req.user
+        name: user.name,
+        email: user.email
     })
 });
 
