@@ -28,6 +28,7 @@ exports.login = async(req, res) => {
             }
         );
 
+        res.session.userId = user._id;
         return res.status(200).json({
             msg: "logged in successfully",
             token,
